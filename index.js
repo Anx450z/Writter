@@ -1,6 +1,8 @@
 var keystrokesHash = {};
 var minTime = Number.MAX_SAFE_INTEGER;
 var maxTime = Number.MIN_SAFE_INTEGER;
+var specialKeys = ['Alt', 'Control', 'CapsLock', 'Shift', 'Home', 'PageUp', 'ArrowUp', 'ArrowLeft', 'Clear', 'ArrowRight', 'End', 'ArrowDown', 'PageDown', 'Insert', '\x00', 'Enter', 'NumLock', 'Shift', 'LaunchWebCam', 'Escape']
+
 
 function captureKeystrokes(event) {
   var key = event.key;
@@ -17,6 +19,32 @@ function displayHash() {
   hashTextBox.value = JSON.stringify(keystrokesHash);
 }
 
+function showKeystrokes(timestamp) {
+  var key = keystrokesHash[timestamp];
+      if (key === 'Enter') {
+      outputTextBox.value += '\n';
+      } else if (key === 'Backspace') {
+      outputTextBox.value = outputTextBox.value.slice(0, -1);
+      } else if (key === 'Tab') {
+      outputTextBox.value += '\t';
+      }else if(specialKeys.includes(key)){
+        // do nothing
+        outputTextBox.value += '';
+      } 
+      else if (key === 'ArrowRight') {
+        // Move cursor position to the right
+        var currentPosition = outputTextBox.selectionStart;
+        outputTextBox.setSelectionRange(currentPosition + 1, currentPosition + 1);
+      } else if (key === 'ArrowLeft') {
+        // Move cursor position to the left
+        var currentPosition = outputTextBox.selectionStart;
+        outputTextBox.setSelectionRange(currentPosition - 1, currentPosition - 1);
+      } 
+      else {
+      outputTextBox.value += key;
+      }
+}
+
 function playbackKeystrokes() {
   var outputTextBox = document.getElementById('outputTextBox');
   outputTextBox.value = '';
@@ -30,20 +58,7 @@ function playbackKeystrokes() {
     var progress = (timeDelay / totalTime) * 100;
 
     setTimeout(function () {
-      var key = keystrokesHash[timestamp];
-      if (key === 'Enter') {
-        outputTextBox.value += '\n';
-      } else if (key === 'Backspace') {
-        outputTextBox.value = outputTextBox.value.slice(0, -1);
-      } else if (key === 'Tab') {
-        outputTextBox.value += '\t';
-      } else if (key === 'Shift') {
-        // Perform shift action here (e.g., capitalize output)
-        // Modify this section according to your desired shift action
-      } else {
-        outputTextBox.value += key;
-      }
-
+      showKeystrokes(timestamp)
       // Update seek bar position
       document.getElementById('seekBar').value = progress;
       document.getElementById('seekTime').textContent = formatTime(timeDelay);
@@ -68,30 +83,9 @@ function seek() {
   outputTextBox.value = '';
 
   Object.keys(keystrokesHash).forEach(function (timestamp) {
-  if (timestamp <= closestTime) {
-  var key = keystrokesHash[timestamp];
-  if (key === 'Enter') {
-  outputTextBox.value += '\n';
-  } else if (key === 'Backspace') {
-  outputTextBox.value = outputTextBox.value.slice(0, -1);
-  } else if (key === 'Tab') {
-  outputTextBox.value += '\t';
-  } else if (key === 'Shift') {
-  // Perform shift action here (e.g., capitalize output)
-  // Modify this section according to your desired shift action
-  } else if (key === 'ArrowRight') {
-    // Move cursor position to the right
-    var currentPosition = outputTextBox.selectionStart;
-    outputTextBox.setSelectionRange(currentPosition + 1, currentPosition + 1);
-  } else if (key === 'ArrowLeft') {
-    // Move cursor position to the left
-    var currentPosition = outputTextBox.selectionStart;
-    outputTextBox.setSelectionRange(currentPosition - 1, currentPosition - 1);
-  }
-  else {
-  outputTextBox.value += key;
-  }
-  }
+    if (timestamp <= closestTime) {
+      showKeystrokes()
+    }
   });
   
   // Update seek time display
