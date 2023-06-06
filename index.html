@@ -12,11 +12,14 @@
   <label for="hashTextBox">Keystrokes Hash:</label>
   <textarea id="hashTextBox" rows="10" cols="50" readonly></textarea>
 
-  <label for="outputTextBox">Type something:</label>
-  <textarea id="outputTextBox" rows="10" cols="50"></textarea>
-
-
   <button onclick="playbackKeystrokes()">Play Keystrokes</button>
+
+  <div>
+    <input type="range" id="seekBar" min="0" max="100" step="1" value="0" oninput="seek()">
+    <span id="seekTime"></span>
+  </div>
+
+  <textarea id="outputTextBox" rows="10" cols="50" readonly></textarea>
 
   <script src="index.js"></script>
 </body>
