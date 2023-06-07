@@ -43,10 +43,13 @@ function showKeystrokes(timestamp) {
       else {
       outputTextBox.value += key;
       }
+
+      currentKeystroke.value = key
 }
 
 function playbackKeystrokes() {
   var outputTextBox = document.getElementById('outputTextBox');
+  var currentKeystroke =  document.getElementById('currentKeystroke');
   outputTextBox.value = '';
 
   var timestamps = Object.keys(keystrokesHash);
@@ -62,7 +65,16 @@ function playbackKeystrokes() {
       // Update seek bar position
       document.getElementById('seekBar').value = progress;
       document.getElementById('seekTime').textContent = formatTime(timeDelay);
-    }, timeDelay);
+    }, timeDelay/2);
+  });
+}
+
+function render() {
+  var outputTextBox = document.getElementById('outputTextBox');
+  outputTextBox.value = '';
+  var timestamps = Object.keys(keystrokesHash);
+  timestamps.forEach(function (timestamp, index) {
+    showKeystrokes(timestamp)
   });
 }
 

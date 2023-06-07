@@ -6,20 +6,23 @@
 <body>
   <h1>Keystroke Capture</h1>
 
-  <label for="inputTextBox">Type something:</label>
-  <textarea id="inputTextBox" rows="10" cols="50"></textarea>
+  <textarea id="inputTextBox" rows="10" cols="50" placeholder="Type here"></textarea>
 
   <label for="hashTextBox">Keystrokes Hash:</label>
-  <textarea id="hashTextBox" rows="10" cols="50" readonly></textarea>
+  <textarea id="hashTextBox" rows="20" cols="100" readonly placeholder="Keystrokes will appear here"></textarea>
 
-  <button onclick="playbackKeystrokes()">Play Keystrokes</button>
+  <div>
+    <button onclick="playbackKeystrokes()">Play Keystrokes</button>
+    <button onclick="render()">Render</button>
+  </div>
 
   <div>
     <input type="range" id="seekBar" min="0" max="100" step="1" value="0" oninput="seek()">
     <span id="seekTime"></span>
   </div>
 
-  <textarea id="outputTextBox" rows="10" cols="50" readonly></textarea>
+  <textarea id="outputTextBox" rows="10" cols="50" readonly placeholder="Final output"></textarea>
+  <input type="text" id="currentKeystroke" readonly placeholder="Current key">
 
   <script src="index.js"></script>
 </body>
