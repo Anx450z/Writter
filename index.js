@@ -3,7 +3,6 @@ var minTime = Number.MAX_SAFE_INTEGER;
 var maxTime = Number.MIN_SAFE_INTEGER;
 var specialKeys = ['Alt', 'Control', 'CapsLock', 'Shift', 'Home', 'PageUp', 'ArrowUp', 'ArrowLeft', 'Clear', 'ArrowRight', 'End', 'ArrowDown', 'PageDown', 'Insert', '\x00', 'Enter', 'NumLock', 'Shift', 'LaunchWebCam', 'Escape']
 
-
 function captureKeystrokes(event) {
   var key = event.key;
   var time = new Date().getTime();
@@ -56,16 +55,15 @@ function playbackKeystrokes() {
   var initialTime = timestamps[0];
   var totalTime = maxTime - minTime;
 
-  timestamps.forEach(function (timestamp, index) {
-    var timeDelay = timestamp - initialTime;
+  timestamps.forEach(function(timestamp, index) {
+    let timeDelay = timestamp - initialTime;
     var progress = (timeDelay / totalTime) * 100;
-
     setTimeout(function () {
       showKeystrokes(timestamp)
       // Update seek bar position
       document.getElementById('seekBar').value = progress;
       document.getElementById('seekTime').textContent = formatTime(timeDelay);
-    }, timeDelay/2);
+    }, timeDelay);
   });
 }
 
